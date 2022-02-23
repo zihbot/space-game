@@ -12,6 +12,5 @@
     "vite": "^2.8.0"
   },
   "dependencies": {
-    "glsl-canvas-js": "^0.2.9"
   }
 }
