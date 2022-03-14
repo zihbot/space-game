@@ -8,6 +8,10 @@ export default abstract class Renderer {
   activate() {
 
   }
+
+  animate() {
+  }
+  preAnimate() {}
 }
 
 export class RendererImpl extends Renderer {

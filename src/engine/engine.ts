@@ -17,6 +17,7 @@ class Engine {
 
     const context = this.canvas.getContext('webgl2');
     if (!context) {
+      console.error('Cannot initialize context', this.canvas);
       throw new Error('Cannot initialize context');
     }
     this.context = context;
@@ -24,19 +25,7 @@ class Engine {
 
   initialize(app: App) {
     this.app = app;
-
     if (!this.app) { throw new NoAppError(); }
-
-
-    /*const program = new Canvas(canvas);
-    program.load({
-      vertexShader: this.app.vertexShader ?? '',
-      fragmentShader: this.app.fragmentShader ?? ''
-    });
-
-    this.program = program.program;
-    this.context = program.gl;
-    this.canvas = program;*/
 
     if (app.initialize) {
       app.initialize();
@@ -52,6 +41,8 @@ class Engine {
     const height = this.canvas.height ?? 1;
     const aspectRatio = width / height;
 
+    this.app?.preAnimate();
+
     this.context.viewport(0, 0, width, height);
     this.context.clearColor(0.8, 0.9, 1.0, 1.0);
     this.context.clear(this.context.COLOR_BUFFER_BIT);
@@ -65,7 +56,6 @@ class Engine {
   }
 
   getContext(): WebGL2RenderingContext {
-    if (!this.context) { throw new NoAppError(); }
     return this.context;
   }
 }
