@@ -2,6 +2,7 @@
 precision highp float;
 
 in vec2 aVertexPosition;
+out float aColorModif;
 
 uniform vec2 uScalingFactor;
 uniform vec2 uRotationVector;
@@ -13,4 +14,5 @@ void main() {
   );
 
   gl_Position = vec4(rotatedPosition * uScalingFactor, 0.0, 1.0);
+  aColorModif = rotatedPosition.x + 0.5;
 }

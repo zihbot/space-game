@@ -4,13 +4,13 @@ export interface CanvasLoadConfig {
 }
 
 export default class Canvas {
-  private program: WebGLProgram;
-  private gl: WebGL2RenderingContext;
+  public program: WebGLProgram;
+  public gl: WebGL2RenderingContext;
 
   private previousTime = 0;
   private currentAngle = 0.0;
 
-  constructor(private canvas: HTMLCanvasElement) {
+  constructor(public canvas: HTMLCanvasElement) {
     const gl = canvas.getContext('webgl2');
     if (!gl) throw new Error("WebGL 2 not supported");
     this.gl = gl;
