@@ -41,13 +41,13 @@ class Engine {
     const height = this.canvas.height ?? 1;
     const aspectRatio = width / height;
 
-    this.app?.preAnimate();
+    this.app?.preAnimate?.();
 
     this.context.viewport(0, 0, width, height);
     this.context.clearColor(0.8, 0.9, 1.0, 1.0);
     this.context.clear(this.context.COLOR_BUFFER_BIT);
 
-    this.app?.animate();
+    this.app?.animate?.();
 
     window.requestAnimationFrame((currentTime) => {
       this.previousTime = currentTime;
