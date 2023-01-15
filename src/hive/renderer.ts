@@ -14,6 +14,7 @@ export default class HiveRenderer extends Renderer {
   positionBuffer: WebGLBuffer;
   sizeBuffer: WebGLBuffer;
   colorBuffer: WebGLBuffer;
+  spawn = 0;
 
   activate(): void {
     const program = new Program();
@@ -37,8 +38,15 @@ export default class HiveRenderer extends Renderer {
   }
 
   animate(): void {
+    this.spawn++;
+    if (this.spawn >= 100) {
+      this.workers.push(new Worker());
+      this.spawn = 0;
+    }
+
     this.predators.forEach((p) => p.move(this.workers));
     this.workers.forEach((w) => w.move(this.workers));
+    this.predators.forEach((p) => this.workers = p.eat(this.workers));
 
     if (!this._program) console.log('No program');
     if (!this._program) return;
