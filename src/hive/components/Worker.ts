@@ -1,8 +1,11 @@
 import engine from '../../engine/engine';
 import Vec2 from '../../engine/vectors/Vec2';
 
-const CENTER_FORCE = 0.01;
-const SEPARATOR_FORCE = 0.1;
+const CENTER_FORCE = 0.02;
+const SEPARATOR_FORCE = 1;
+const ALIGN_FORCE = 0.01;
+const TOWARDS_DISTANCE = 1;
+const SEAPARETE_DISTANCE = 0.1;
 
 export default class Worker {
   public position = new Vec2(0, 0);
@@ -22,16 +25,17 @@ export default class Worker {
     if (this.position.y < -1) this.position.y += 2;
 
     let deltaV = new Vec2(0, 0);
-    let center = new Vec2(0, 0);
     others.forEach((o) => {
       if (o == this) return;
 
       const rel = o.position.sub(this.position);
-      if (rel.magnitude() < 1) {
+      const distance = rel.magnitude();
+      if (distance < TOWARDS_DISTANCE) {
         deltaV = deltaV.add(rel.multiply(CENTER_FORCE));
+        deltaV = deltaV.add(o.velocity.multiply((TOWARDS_DISTANCE - distance) * ALIGN_FORCE));
       }
-      if (rel.magnitude() < 0.1) {
-        deltaV = deltaV.sub(rel.multiply(SEPARATOR_FORCE));
+      if (distance < SEAPARETE_DISTANCE) {
+        deltaV = deltaV.sub(rel.multiply((SEAPARETE_DISTANCE - distance) * SEPARATOR_FORCE));
       }
     });
 
