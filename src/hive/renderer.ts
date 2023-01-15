@@ -4,11 +4,12 @@ import Renderer from '../engine/renderer';
 import vertexShader from './shaders/main.vert?raw';
 import fragmentShader from './shaders/main.frag?raw';
 import engine from '../engine/engine';
-import Worker from './components/Worker.';
+import Worker from './components/Worker';
 
 export default class HiveRenderer extends Renderer {
   _program?: Program;
   workers = [] as Worker[];
+  workerBuffer: WebGLBuffer;
 
   activate(): void {
     const program = new Program();
@@ -25,33 +26,29 @@ export default class HiveRenderer extends Renderer {
     const glProgram = this._program.getProgram();
     gl.useProgram(glProgram);
 
-    const vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, this.workerPosArray(), gl.STATIC_DRAW);
+    this.workerBuffer = gl.createBuffer();
   }
 
   animate(): void {
+    this.workers.forEach(w => w.move(this.workers));
+
     if (!this._program) console.log('No program');
     if (!this._program) return;
     const gl = engine.getContext();
     const program = this._program.getProgram();
 
-    //const vertexArray = new Float32Array([-0.5, 0.5, 0.5, 0.5, 0.5, -0.5]);
-
     gl.useProgram(program);
 
-    //const vertexBuffer = gl.createBuffer();
-    //gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    //gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
     const aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
-
     gl.enableVertexAttribArray(aVertexPosition);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.workerBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, this.workerPosArray(), gl.DYNAMIC_DRAW);
     gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
 
     gl.drawArrays(gl.POINTS, 0, this.workers.length);
   }
 
   workerPosArray(): Float32Array {
-    return new Float32Array(this.workers.flatMap((w) => [w.pos.x, w.pos.y]));
+    return new Float32Array(this.workers.flatMap((w) => [w.position.x, w.position.y]));
   }
 }

@@ -1,12 +1,13 @@
 import './style.css';
 import App from "./app";
-import Canvas from "./canvas";
 
 class Engine {
   private app?: App;
   private context: WebGL2RenderingContext;
   private canvas: HTMLCanvasElement;
-  private previousTime = 0;
+
+  public time = 0;
+  public deltaTime = 0;
 
   constructor() {
     const appElem = document.querySelector<HTMLDivElement>('#app')!
@@ -50,7 +51,8 @@ class Engine {
     this.app?.animate?.();
 
     window.requestAnimationFrame((currentTime) => {
-      this.previousTime = currentTime;
+      this.deltaTime = currentTime - this.time;
+      this.time = currentTime;
       this.animate();
     });
   }
