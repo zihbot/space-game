@@ -1,19 +1,11 @@
-import engine from "./engine";
+import engine from './engine';
 
 export default abstract class Renderer {
+  constructor() {}
 
-  constructor() {
-  }
-
-  activate() {
-
-  }
-
-  animate() {
-  }
+  activate() {}
+  animate() {}
   preAnimate() {}
 }
 
-export class RendererImpl extends Renderer {
-
-}
+export class RendererImpl extends Renderer {}

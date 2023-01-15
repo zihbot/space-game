@@ -1,9 +1,9 @@
-import Program from "../engine/gl/program";
-import Renderer from "../engine/renderer";
+import Program from '../engine/gl/program';
+import Renderer from '../engine/renderer';
 
 import vertexShader from './shaders/main.vert?raw';
 import fragmentShader from './shaders/main.frag?raw';
-import engine from "../engine/engine";
+import engine from '../engine/engine';
 
 export default class HiveRenderer extends Renderer {
   _program?: Program;
@@ -16,8 +16,7 @@ export default class HiveRenderer extends Renderer {
     this._program = program;
   }
 
-  preAnimate(): void {
-  }
+  preAnimate(): void {}
 
   animate(): void {
     if (!this._program) console.log('No program');
@@ -25,9 +24,7 @@ export default class HiveRenderer extends Renderer {
     const gl = engine.getContext();
     const program = this._program.getProgram();
 
-    const vertexArray = new Float32Array([
-      -0.5, 0.5, 0.5, 0.5, 0.5, -0.5
-    ]);
+    const vertexArray = new Float32Array([-0.5, 0.5, 0.5, 0.5, 0.5, -0.5]);
     const vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertexArray, gl.STATIC_DRAW);
@@ -35,7 +32,7 @@ export default class HiveRenderer extends Renderer {
     gl.useProgram(program);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer ?? null);
-    const aVertexPosition = gl.getAttribLocation(program, "aVertexPosition");
+    const aVertexPosition = gl.getAttribLocation(program, 'aVertexPosition');
 
     gl.enableVertexAttribArray(aVertexPosition);
     gl.vertexAttribPointer(aVertexPosition, 2, gl.FLOAT, false, 0, 0);
