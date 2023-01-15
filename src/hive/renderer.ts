@@ -45,7 +45,7 @@ export default class HiveRenderer extends Renderer {
     }
 
     this.predators.forEach((p) => p.move(this.workers));
-    this.workers.forEach((w) => w.move(this.workers));
+    this.workers.forEach((w) => w.move(this.workers, this.predators));
     this.predators.forEach((p) => this.workers = p.eat(this.workers));
 
     if (!this._program) console.log('No program');
